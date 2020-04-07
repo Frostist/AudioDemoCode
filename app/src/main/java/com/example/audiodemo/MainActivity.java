@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.SeekBar;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 //making it public for all classes
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public void play(View view) {
 //Starts the music
         mediaPlayer.start();
+
     }
 
     public void pause(View view) {
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         playSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress2, boolean fromUser) {
+               //Logging when the value changes
                 Log.w(TAG, "Value Changed: " + progress2);
 
             }
@@ -109,8 +112,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        new Timer();
-
+        //Creating a new timer// Made at a certain rate
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                playSeekBar.setProgress(mediaPlayer.getCurrentPosition());
+            }
+            //Defining when we want it to start 0 being now and 1000 being every second or 100 for 1 tenth of a second
+        }, 0, 100);
     }
 }
